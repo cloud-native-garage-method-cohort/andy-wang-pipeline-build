@@ -1,0 +1,12 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: andy-wang-pipeline-build-run-
+spec:
+  serviceAccountName: build-bot
+  pipelineRef:
+    name: andy-wang-pipeline-build
+  workspaces:
+    - name: pipeline-shared-data
+      persistentVolumeClaim:
+        claimName: andy-wang-pvc

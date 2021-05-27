@@ -1,0 +1,14 @@
+# We need a way to route traffic to the EventListener
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: awpks-el-route
+spec:
+  port:
+    targetPort: 8080
+  to:
+    kind: Service
+    name: el-awpks
+    weight: 100
+
+# how to bind this port to our gh webhook?

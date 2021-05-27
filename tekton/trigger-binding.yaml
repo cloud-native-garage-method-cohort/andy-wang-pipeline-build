@@ -1,0 +1,14 @@
+# Trigger Mapping
+# A mapping of the response payload to params:
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerBinding
+metadata:
+  name: andy-wang-pipeline-build-triggerbinding
+spec:
+  params:
+    - name: namespace
+      value: andy-wang-pipeline-from-scratch
+    - name: gitrepositoryurl
+      value: $(body.repository.url)
+    - name: gitrepositoryname
+      value: $(body.repository.name)

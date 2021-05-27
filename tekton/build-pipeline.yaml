@@ -1,0 +1,89 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  annotations:
+    app.openshift.io/runtime: nodejs
+  name: andy-wang-pipeline-build
+spec:
+  workspaces:
+    - name: pipeline-shared-data
+      description: |
+        This workspace stores the cloned repository and is available to all steps
+  params:
+    - name: image-repo
+      type: string
+      description: Docker image name
+      default: quay.io/andreask/express-sample-app
+  tasks:
+    - name: clone-repository
+      params:
+        - name: url
+          value: https://github.com/upslopeio/express-sample-app
+      taskRef:
+        kind: Task
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: pipeline-shared-data
+    - name: install-dependencies
+      taskRef:
+        name: npm
+      workspaces:
+        - name: source
+          workspace: pipeline-shared-data
+      params:
+        - name: ARGS
+          value:
+            - clean-install
+      runAfter:
+        - clone-repository
+    - name: run-tests
+      taskRef:
+        name: npm
+      workspaces:
+        - name: source
+          workspace: pipeline-shared-data
+      params:
+        - name: ARGS
+          value:
+            - test
+      runAfter:
+        - install-dependencies
+    - name: build-image
+      runAfter:
+        - run-tests
+      params:
+        - name: IMAGE
+          value: "$(params.image-repo):$(tasks.clone-repository.results.commit)"
+      taskRef:
+        kind: Task
+        name: buildah
+      workspaces:
+        - name: source
+          workspace: pipeline-shared-data
+    - name: kustomize-build
+      runAfter:
+        - build-image
+      params:
+         - name: image-with-tag
+           value: "quay.io/andywang_1993/express-sample-app=$(params.image-repo):$(tasks.clone-repository.results.commit)"
+      taskRef:
+        kind: Task
+        name: kustomize-build
+      workspaces:
+        - name: source
+          workspace: pipeline-shared-data
+    - name: test-deploy
+      runAfter:
+        - kustomize-build
+      params:
+        - name: app-namespace
+          value: andy-wang-pipeline-from-scratch
+        - name: app-name
+          value: andy-wang-pipeline-from-scratch
+      taskRef:
+        kind: Task
+        name: test-deploy
+      workspaces:
+        - name: source
+          workspace: pipeline-shared-data

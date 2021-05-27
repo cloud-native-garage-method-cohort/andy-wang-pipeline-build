@@ -1,0 +1,21 @@
+#  we need to create a TriggerTemplate to enable our desired functionality
+#  of triggering a build from a git push. The TriggerTemplate specifies a blueprint
+#  for the PipelineRun to execute when a git push occurs
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: andy-wang-pipeline-build-triggertemplate
+spec:
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        generateName: andy-wang-pipeline-build-run-
+      spec:
+        serviceAccountName: build-bot
+        pipelineRef:
+          name: andy-wang-pipeline-build
+        workspaces:
+          - name: pipeline-shared-data
+            persistentVolumeClaim:
+              claimName: andy-wang-pvc

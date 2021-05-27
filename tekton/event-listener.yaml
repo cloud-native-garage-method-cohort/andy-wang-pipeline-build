@@ -1,0 +1,11 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: EventListener
+metadata:
+  name: awpks
+spec:
+  serviceAccountName: tekton-triggers-sa
+  triggers:
+    - bindings:
+        - ref: andy-wang-pipeline-build-triggerbinding
+      template:
+        name: andy-wang-pipeline-build-triggertemplate
