@@ -19,7 +19,7 @@ spec:
       image: docker.io/enzobarrett/kubectl:latest
       script: |
         #!/bin/sh
-        cd source
+        cd source/k8s
         set -e
         APP_NAMESPACE="$(params.app-namespace)"
 

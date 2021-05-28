@@ -13,7 +13,7 @@ spec:
     - name: image-repo
       type: string
       description: Docker image name
-      default: quay.io/andreask/express-sample-app
+      default: quay.io/andywang_1993/express-sample-app
   tasks:
     - name: clone-repository
       params:
@@ -87,3 +87,17 @@ spec:
       workspaces:
         - name: source
           workspace: pipeline-shared-data
+        # - name: gitops
+        #       runAfter:
+        #         - test-deploy
+        #       taskRef:
+        #         kind: Task
+        #         name: gitops
+        #       params:
+        #         - name: app-name
+        #           value: andreas-kavountzis-pipeline-from-scratch
+        #         - name: sha
+        #           value: "$(tasks.clone-repository.results.commit)"
+        #       workspaces:
+        #         - name: source
+        #           workspace: pipeline-shared-data

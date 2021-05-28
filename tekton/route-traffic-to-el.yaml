@@ -12,3 +12,5 @@ spec:
     weight: 100
 
 # how to bind this port to our gh webhook?
+# oc get routes 
+# find awpks-el-route's path and hook in github webhook

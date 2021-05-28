@@ -19,7 +19,6 @@ rules:
   - apiGroups:
       - image.openshift.io
     resources:
-      - "imagestreams"
       - "imagestreams/layers"
     verbs:
       - "*"
@@ -64,6 +63,8 @@ rules:
     resources:
       - services
     verbs:
+      - get
+      - create
       - patch
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -83,28 +84,32 @@ kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: tekton-triggers-role
+  namespace: andy-wang-pipeline-from-scratch
 rules:
   - apiGroups:
+      - triggers.tekton.dev   
       - tekton.dev
     resources:
       - eventlisteners
       - triggerbindings
       - triggertemplates
-      - pipelineresources
     verbs:
       - get
+      - list
   - apiGroups:
       - tekton.dev
     resources:
       - pipelineruns
       - pipelineresources
     verbs:
+      - get
       - create
   - apiGroups:
       - ""
     resources:
       - configmaps
     verbs:
+      - get
       - list
 ---
 apiVersion: rbac.authorization.k8s.io/v1

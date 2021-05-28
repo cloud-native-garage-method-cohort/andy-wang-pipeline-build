@@ -10,3 +10,10 @@ spec:
     - name: pipeline-shared-data
       persistentVolumeClaim:
         claimName: andy-wang-pvc
+      # volumeClaimTemplate:
+      #   spec:
+      #     accessModes:
+      #       - ReadWriteOnce
+      #     resources:
+      #       requests:
+      #         storage: 1Gi
