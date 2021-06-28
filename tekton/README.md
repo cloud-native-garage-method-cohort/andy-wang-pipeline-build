@@ -4,6 +4,11 @@ Purpuse :
     Use the Task Catalog to build a Pipeline that clones a Git repository, runs the tests, creates a Docker image, pushes the image to quay.io
 Note : will need to update... starts from Kustomize from now.
 -----
+[+gitclone+]
+ oc apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/git-clone/0.3/git-clone.yaml
+
+[+Test-npm+]
+kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/npm/0.1/npm.yaml
 
 [+buildah+]
 Is tool for building Open Container Initiative (OCI) containers.
@@ -49,13 +54,13 @@ $:> kubectl create secret -n <your namespace or project name> docker-registry qu
 ---
 
 [Step4]
-Accessible to the Pipeline. We create a <ServiceAccount> at the command line:
+* Accessible to the Pipeline. We create a <ServiceAccount> at the command line:
 
 $:> kubectl create sa build-bot
 $:> kubectl patch serviceaccount build-bot -p '{"secrets": [{"name": "quay-io-xxx-password"}]}'
 $:> kubectl get sa -n <your namespace or project name> build-bot -o yaml
 
-Modify pipelineRun as follows: ( add serviceAccountName: build-bot in spec)
+* Modify pipelineRun as follows: ( add serviceAccountName: build-bot in spec)
 
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
@@ -118,7 +123,7 @@ roleRef:
 ---
 
 
-
+[+Kustomize+]
 THE NEXT : 
 
     We want to do is construct Kubernetes configuration. We use Kustomize.

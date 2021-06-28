@@ -4,7 +4,7 @@
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: TriggerTemplate
 metadata:
-  name: andy-wang-pipeline-build-triggertemplate
+  name: andy-pipeline-triggertemplate
 spec:
   resourcetemplates:
     - apiVersion: tekton.dev/v1beta1

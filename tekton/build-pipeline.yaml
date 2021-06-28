@@ -13,7 +13,7 @@ spec:
     - name: image-repo
       type: string
       description: Docker image name
-      default: quay.io/andywang_1993/express-sample-app
+      default: quay.io/andywang_1993/express-app
   tasks:
     - name: clone-repository
       params:
@@ -35,6 +35,8 @@ spec:
         - name: ARGS
           value:
             - clean-install
+        - name: PATH_CONTEXT
+          value: nodejs-app/entity-view-app/ 
       runAfter:
         - clone-repository
     - name: run-tests
@@ -55,6 +57,8 @@ spec:
       params:
         - name: IMAGE
           value: "$(params.image-repo):$(tasks.clone-repository.results.commit)"
+        - name: CONTEXT
+          value: nodejs-app/entity-view-app # TODO What is this 
       taskRef:
         kind: Task
         name: buildah
@@ -66,7 +70,7 @@ spec:
         - build-image
       params:
          - name: image-with-tag
-           value: "quay.io/andywang_1993/express-sample-app=$(params.image-repo):$(tasks.clone-repository.results.commit)"
+           value: "quay.io/andywang_1993/express-app=$(params.image-repo):$(tasks.clone-repository.results.commit)"
       taskRef:
         kind: Task
         name: kustomize-build
@@ -78,26 +82,26 @@ spec:
         - kustomize-build
       params:
         - name: app-namespace
-          value: andy-wang-pipeline-from-scratch
+          value: andy-pipeline
         - name: app-name
-          value: andy-wang-pipeline-from-scratch
+          value: andy-app
       taskRef:
         kind: Task
         name: test-deploy
       workspaces:
         - name: source
           workspace: pipeline-shared-data
-        # - name: gitops
-        #       runAfter:
-        #         - test-deploy
-        #       taskRef:
-        #         kind: Task
-        #         name: gitops
-        #       params:
-        #         - name: app-name
-        #           value: andreas-kavountzis-pipeline-from-scratch
-        #         - name: sha
-        #           value: "$(tasks.clone-repository.results.commit)"
-        #       workspaces:
-        #         - name: source
-        #           workspace: pipeline-shared-data
+    - name: gitops
+      runAfter:
+        - test-deploy
+      taskRef:
+        kind: Task
+        name: gitops
+      params:
+        - name: app-name
+          value: andy-app
+        - name: sha
+          value: "$(tasks.clone-repository.results.commit)"
+      workspaces:
+        - name: source
+          workspace: pipeline-shared-data

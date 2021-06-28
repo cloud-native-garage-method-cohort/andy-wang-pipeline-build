@@ -2,7 +2,7 @@ apiVersion: image.openshift.io/v1
 kind: ImageStream
 metadata:
   name: andy-wang-pipeline-build-imagestream
-  namespace: andy-wang-pipeline-from-scratch
+  namespace: andy-pipeline
 ---
 # Role : builder
 apiVersion: rbac.authorization.k8s.io/v1
@@ -84,7 +84,7 @@ kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: tekton-triggers-role
-  namespace: andy-wang-pipeline-from-scratch
+  namespace: andy-pipeline
 rules:
   - apiGroups:
       - triggers.tekton.dev   

@@ -10,6 +10,6 @@ spec:
     termination: edge
   to:
     kind: Service
-    name: andy-wang-pipeline-from-scratch # is this the namespace?
+    name: andy-pipeline
     weight: 100
   wildcardPolicy: None

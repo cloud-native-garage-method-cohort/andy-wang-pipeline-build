@@ -6,6 +6,6 @@ spec:
   serviceAccountName: tekton-triggers-sa
   triggers:
     - bindings:
-        - ref: andy-wang-pipeline-build-triggerbinding
+        - ref: andy-pipeline-triggerbinding
       template:
-        name: andy-wang-pipeline-build-triggertemplate
+        name: andy-pipeline-triggertemplate

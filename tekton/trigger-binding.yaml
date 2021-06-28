@@ -3,11 +3,11 @@
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: TriggerBinding
 metadata:
-  name: andy-wang-pipeline-build-triggerbinding
+  name: andy-pipeline-triggerbinding
 spec:
   params:
     - name: namespace
-      value: andy-wang-pipeline-from-scratch
+      value: andy-pipeline
     - name: gitrepositoryurl
       value: $(body.repository.url)
     - name: gitrepositoryname
